@@ -1,52 +1,51 @@
-const CIRCLECI_API_TOKEN = '';
+// TODO: Use a background script to provides this function for all
+const getCircleCiApiToken = async () => {
+  const storageData = await browser.storage.sync.get();
 
-// TODO: FAUDRA TROUVER
-setTimeout(function() {
-    const actions = document.getElementsByClassName('status-actions');
-    let workflowIds = [];
+  const circleCiApiToken = storageData.CIRCLECI_API_TOKEN;
 
-    for (let i = 0; i < actions.length; i++) {
-        const action = actions[i];
-        const href = action.getAttribute('href');
+  if(undefined === circleCiApiToken) {
+    return null;
+  }
+  return circleCiApiToken;
+};
 
-        if (href.startsWith('https://circleci.com/workflow-run/')) {
-            const workflowId = href
-                .replace('https://circleci.com/workflow-run/', '')
-                .split('?')[0];
+const getWorkflowIds = () => {
+  const actions = document.getElementsByClassName('status-actions');
+  const hrefs = Array.from(actions).map(action => action.getAttribute('href'));
+  const circleCiHrefs = hrefs.filter(href => href.startsWith('https://circleci.com/workflow-run/'));
+  const workflowIds = circleCiHrefs.map(href => href.replace('https://circleci.com/workflow-run/', '').split('?').shift());
+  return Array.from(new Set(workflowIds));
+};
 
-            workflowIds.push(workflowId);
-        }
-    }
+const fetchWorkflow = async (workflowId) => {
+  const url = `https://circleci.com/api/v2/workflow/${workflowId}/job`;
+  const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+          'Circle-Token': await getCircleCiApiToken(),
+          'Content-Type': 'application/json',
+      },
+  });
+  return response.ok ? await response.json() : null;
+};
 
-    const uniqueWorkflowIds = Array.from(new Set(workflowIds));
+const renderButton = (onClick) => {
+  const button = document.createElement('button');
+  button.innerText = 'Retry';
+  button.classList.add('retry-button');
+  button.addEventListener('click', onClick);
+  document.body.appendChild(button);
+};
 
-    // create a button for each uniqueWorkflowIds
-    for (let i = 0; i < uniqueWorkflowIds.length; i++) {
-        const workflowId = uniqueWorkflowIds[i];
+// TODO: FAUDRA TROUVER @ValentinMumble
+setTimeout(async () => {
+  const workflowIds = getWorkflowIds();
 
-        const button = document.createElement('button');
-        button.innerText = 'Retry';
-        button.classList.add('retry-button');
-        button.setAttribute('data-workflow-id', workflowId);
-
-        button.addEventListener('click', function(event) {
-            const workflowId = event.target.getAttribute('data-workflow-id');
-
-            fetch('https://circleci.com/api/v2/workflow/' + workflowId + '/job', {
-                method: 'GET',
-                headers: {
-                    'Circle-Token': CIRCLECI_API_TOKEN,
-                    'Content-Type': 'application/json'
-                },
-            }).then(function(response) {
-                console.log('response', response);
-                response.json().then((data) => console.log(data))
-            });
-        });
-
-        // Status: "on_hold", type: "approval"
-
-        document.body.appendChild(button);
-    }
-
+  workflowIds.forEach(workflowId => {
+      renderButton(async () => {
+          const workflow = await fetchWorkflow(workflowId);
+          console.log(workflow);
+      });
+  });
 }, 3500);
