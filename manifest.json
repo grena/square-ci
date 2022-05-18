@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "square-ci",
+  "version": "1.0",
+  "description": "Launch Circle-CI jobs from GitHub",
+
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+
+  "permissions": [
+    "https://github.com/*/*",
+    "https://circleci.com/*",
+    "storage",
+    "contextMenus",
+    "activeTab"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*/*/pull/*"],
+      "js": ["index.js"],
+      "run_at": "document_start"
+    }
+  ]
+
+}
