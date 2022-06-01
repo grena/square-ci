@@ -17,7 +17,10 @@
   "content_scripts": [
     {
       "matches": ["https://github.com/*/*/pull/*"],
-      "js": ["index.js"],
+      "js": [
+        "node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
+        "index.js"
+      ],
       "run_at": "document_start"
     }
   ],
