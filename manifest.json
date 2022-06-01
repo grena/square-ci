@@ -4,7 +4,7 @@
   "version": "1.0",
   "description": "Launch Circle-CI jobs from GitHub",
   "icons": {
-    "128": "icon.jpg"
+    "128": "logo-large.png"
   },
   "permissions": [
     "https://github.com/*",
@@ -25,5 +25,10 @@
     "gecko": {
       "id": "square@ci.com"
     }
+  },
+  "browser_action": {
+    "default_icon": "logo.png",
+    "default_title": "Square-CI",
+    "default_popup": "settings.html"
   }
 }
