@@ -30,4 +30,5 @@ jobs:
       - name: Upload the generated extension as an artifact
         uses: actions/upload-artifact@v1
         with:
+          name: Compiled extension
           path: build/*.zip
