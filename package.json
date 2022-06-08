@@ -1,5 +1,17 @@
 {
-  "devDependencies": {
+  "license": "GPL-3.0-only",
+  "dependencies": {
     "webextension-polyfill": "^0.9.0"
+  },
+  "scripts": {
+    "extension:build": "yarn run lib:build && yarn run web-ext build --source-dir build --overwrite-dest",
+    "extension:lint": "yarn run lib:build && yarn run web-ext lint --source-dir build --artifacts-dir build",
+    "lib:build": "node ./build.js"
+  },
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "^0.14.43",
+    "esbuild-plugin-copy": "^1.3.0",
+    "web-ext": "^6.8.0"
   }
 }

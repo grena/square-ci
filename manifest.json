@@ -4,7 +4,8 @@
   "version": "1.0",
   "description": "Launch Circle-CI jobs from GitHub",
   "icons": {
-    "128": "logo-large.png"
+    "48": "icon-48.png",
+    "128": "icon-128.png"
   },
   "permissions": [
     "https://github.com/*",
@@ -17,10 +18,7 @@
   "content_scripts": [
     {
       "matches": ["https://github.com/*/*/pull/*"],
-      "js": [
-        "node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
-        "index.js"
-      ],
+      "js": ["index.js"],
       "run_at": "document_start"
     }
   ],
@@ -30,7 +28,10 @@
     }
   },
   "browser_action": {
-    "default_icon": "logo.png",
+    "default_icon": {
+      "48": "icon-48.png",
+      "128": "icon-128.png"
+    },
     "default_title": "Square-CI",
     "default_popup": "settings.html"
   }
