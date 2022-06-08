@@ -28,3 +28,9 @@ jobs:
         with:
           extensionDir: '.'
           zipFilePath: 'build/extension.zip'
+
+      - name: Upload the generated extension as an artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: extension
+          path: build/extension.zip
