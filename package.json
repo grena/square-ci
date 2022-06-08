@@ -4,8 +4,9 @@
     "webextension-polyfill": "^0.9.0"
   },
   "scripts": {
-    "extension:build": "yarn run lib:build && yarn run web-ext build --source-dir build --overwrite-dest",
-    "extension:lint": "yarn run lib:build && yarn run web-ext lint --source-dir build --artifacts-dir build",
+    "extension:build": "yarn run lib:build && yarn run web-ext build --source-dir build --artifacts-dir build --overwrite-dest",
+    "extension:lint": "yarn run lib:build && yarn run web-ext lint --source-dir build",
+    "extension:publish": "yarn run web-ext sign --source-dir build",
     "lib:build": "node ./build.js"
   },
   "type": "module",
