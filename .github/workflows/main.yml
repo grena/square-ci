@@ -19,7 +19,7 @@ jobs:
           node-version: "16.x"
 
       - name: Install dependencies
-        run: yarn install --production=true
+        run: yarn install
 
       - name: Lint extension
         run: yarn run extension:lint
