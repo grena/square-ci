@@ -26,5 +26,5 @@ jobs:
       - name: zip le bazar
         uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
         with:
-          extensionDir: 'extension'
+          extensionDir: '.'
           zipFilePath: 'build/extension.zip'
